@@ -4,7 +4,7 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const MasterConfig = require('./Config/Master.json');
 const db = require("mongoose");
 
-db.connect("mongodb+srv://nilopachi:4WwhyXSoGTKbHBSU@cluster0.exgbz3p.mongodb.net/PhoenixDev?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
+db.connect(MasterConfig.dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const client = new Client({
     intents: [
