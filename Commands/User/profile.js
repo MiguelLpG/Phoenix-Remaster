@@ -77,7 +77,7 @@ module.exports = {
 
         // Verificación de interchatInfoProf antes de continuar
         if (!interchatInfoProf) {
-            return interaction.reply({ content: "Para usar este comando debes tener una cuenta en Interchat, crea una con `/createuser`.", ephemeral: true });
+            return interaction.reply({ content: "Para usar este comando debes tener una cuenta en Conecta!, crea una con `/createuser`.", ephemeral: true });
         }
 
         const rangoUsuario = rankManager[interchatInfoProf.rank[0]];
@@ -90,9 +90,8 @@ module.exports = {
             .addFields(
                 { name: " `|` **__Discord:__**", value: user.username, inline: true },
                 { name: "🆔 `|` **__HASH:__**", value: interchatInfoProf.interchatID, inline: true },
-                { name: " `|` **__Apodo:__**", value: member.nickname ? member.nickname : "No tiene Alias", inline: true },
-                { name: " `|` **__Fecha Ingreso:__**", value: formatDate('DD/MM/YYYY, a las HH:mm:ss', user.createdAt), inline: true },
-                { name: " `|` **__Registro de ingreso:__**", value: formatDate('DD/MM/YYYY, a las HH:mm:ss', member.joinedAt), inline: true },
+                { name: " `|` **__Apodo:__**", value: interchatInfoProf.apodo ? interchatInfoProf.apodo : "ERROR", inlnie: true },
+                { name: " `|` **__Registro Conecta!__**", value: interchatInfoProf.fechaCreacion.toString(), inline: true },
                 {
                     name: " `|` **__Insignias:__**",
                     value: interchatInfoProf && interchatInfoProf.badges.length > 0
@@ -106,13 +105,13 @@ module.exports = {
                     inline: true
                 },
                 {
-                    name: "Rango ️",
+                    name: "Rango ",
                     value: nombreRango,
                     inline: true
                 },
                 { name: " `|` **__Info Roles:__**", value: `» **Role Superior:** <@&${member.roles.highest.id}> \n» **Role que le da color:** <@&${member.roles.color?.id || member.roles.highest.id}> \n» **Roles:** ${roles1}` }
             )
-            .setFooter({ text: "Información del usuario en Interchat", iconURL: client.user.displayAvatarURL() });
+            .setFooter({ text: "Información del usuario en Conecta!", iconURL: client.user.displayAvatarURL() });
 
         const userProfile = new ButtonBuilder()
             .setCustomId('userProfile')
@@ -121,7 +120,7 @@ module.exports = {
 
         const interProfile = new ButtonBuilder()
             .setCustomId('interProfile')
-            .setLabel('Perfil de Interchat')
+            .setLabel('Perfil de Conecta!')
             .setStyle(ButtonStyle.Success);
 
         const botonesSend = new ActionRowBuilder()

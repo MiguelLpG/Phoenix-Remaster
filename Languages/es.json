@@ -1,0 +1,18 @@
+{   
+    "setup": {
+        "step1Confirm": "El lenguage que has elegido para la configuración es el **español**. \nA continuación selecciona el canal que será utilizado como interchat.",
+        "step2Confirm": "Estupendo, has seleccionado el canal <#%%> \n\n¡Ya has finalizado la instalación! Puedes comenzar a utilizar Conecta! en el canal <#%%>"
+    },
+    "rules": {
+        "title": "REGLAS DE CONECTA!",
+        "text": "_Antes de comenzar a usar **Conecta!**, lee estas reglas para evitar ser sancionado._",
+        "rule1": "**1.** Las invitaciones no están permitidaas, pues el bot cuenta con un sistema integrado para dicho proposito.",
+        "rule2": "**2.** Está prohibido solicitar a los usuarios que se unan a tu servidor, esto es algo que ellos deben hacer de forma voluntaria.",
+        "rule3": "**3.** Está terminantemente prohibido realizar flood o spam de cualquier tipo.",
+        "rule4": "**4.** Está prohibido enviar cualquier tipo de enlace malicioso, ya sea virus, iplogger o similares.",
+        "rule5": "**5.** Está prohibido enviar contenido NSFW ni ninguna de sus variantes.",
+        "rule6": "**6.** Está probidio insultar o faltar al respeto a cualquier usuario, así como discriminarlo por su religión, creencias, etc...",
+        "rule7": "**7.** Está prohibido realizar cualquier tipo de referencia política o religiosa en el chat.",
+        "rule8": "**8.** Debes respetar en todo momento los [Terminos de Servicio](https://discord.com/terms) de discord así como las [Directivas de la Comunidad](https://discord.com/guidelines)."
+    }
+}
