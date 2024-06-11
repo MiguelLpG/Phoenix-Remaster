@@ -1,0 +1,22 @@
+{
+  "name": "phoenix-bot",
+  "version": "0.0.1",
+  "main": "bot.js",
+  "scripts": {
+    "run": "node bot.js",
+    "dev": "node deploy-devcmd.js | node bot.js"
+  },
+  "author": "vitro.",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "mongoose": "^8.4.1",
+    "os": "^0.1.2",
+    "quick.db": "^9.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^9.4.0",
+    "nodemon": "^3.1.3"
+  }
+}
