@@ -1,10 +1,17 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, ChannelType, EmbedBuilder } = require('discord.js');
 const MasterConfig = require('./Config/Master.json');
-const db = require("mongoose");
+const mongoose = require('mongoose');
 
-db.connect(MasterConfig.dbURL);
+const InterchatSettings = require("./Models/InterchatSettings.js");
+
+// Conexión a MongoDB
+mongoose.connect(MasterConfig.dbURL).then(() => {
+    console.log("[\033[0;32mLOG - SYS\033[0m] Conectado a MongoDB.");
+}).catch(err => {
+    console.log("[\033[0;31mLOG - ERR\033[0m] Error al conectar a MongoDB: " + err);
+});
 
 const client = new Client({
     intents: [
@@ -51,6 +58,32 @@ for (const file of eventFiles) {
         console.log("[\033[0;32mHANDLER - EVENTO\033[0m] >>> \033[0;36m" + fileName + "\033[0m >> cargado (" + d.getMilliseconds() + "ms)");
     }
 }
+
+let palabras = [".gg", "www.", ".io", ".com", "discord.gg/", "discord.com/", "discordapp.com/", ".es", "youtu.be", "puto", "gay", "puta", "zorra", "el de arriba", "el de abajo", "polla", "pinga", "al md", "se vende", "unete", "uniros", "unanse", "unirse", "pinche", "pene", "foll", "traga", "join", "raid", "hacked", "ddns.", ".tk", "el admin es", "el mod es", "el admi es", "mamon", "eres un", "perra", "sex", "http://", "https://", "dame nitro", "quiero nitro", "a mi server", "feo", "mierda", "culo", "raided", "paja"]
+
+const palabraEmbed = new EmbedBuilder()
+    .setColor("Orange")
+    .setTitle("¡Se ha bloqueado tu mensaje!")
+    .setDescription("Nuestros sitemas han determinado que tu mensaje contenia contenido inapropiado o no permitido, por lo que no ha sido enviado. \n\nSi crees que esto es un error, contacta con el equipo de soporte.")
+
+client.on("messageCreate", async (message) => {
+    if (message.author.bot) return;
+    if (message.channel.type != ChannelType.GuildText) return;
+
+    const interchatSetting = await InterchatSettings.findOne({ guildID: message.guild.id, channelID: message.channel.id });
+    if (!interchatSetting) return;
+
+    const messageContent = message.content.toLowerCase();
+
+    if (palabras.some(palabra => messageContent.includes(palabra))) {
+        await message.delete()
+        return message.channel.send({ content: `<@${message.author.id}>`, embeds: [palabraEmbed ] })
+    }
+
+    const interchatSend = require('./Managers/interchat.js');
+    interchatSend(client, message)
+
+});
 
 try {
     client.login(MasterConfig.token).then(() => {
