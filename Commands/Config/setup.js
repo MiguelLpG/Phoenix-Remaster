@@ -1,5 +1,4 @@
 const { ButtonBuilder, ButtonStyle, SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ChannelSelectMenuBuilder, ChannelType } = require('discord.js');
-const mongoose = require('mongoose');
 const InterchatSettings = require("../../Models/InterchatSettings");
 
 module.exports = {
@@ -8,6 +7,9 @@ module.exports = {
         .setName('setup')
         .setDescription('Setup the basic settings of the bot in your server.'),
     async execute(interaction, client) {
+        const guildOwner = (await interaction.guild.fetchOwner()).id;
+
+        if(interaction.user.id != guildOwner) return interaction.reply({ content: "Solamente el dueño del servidor puede ejecutar este comando." })
         await interaction.deferReply({ ephemeral: false });
 
 		const existingSettings = await InterchatSettings.findOne({ guildID: interaction.guild.id });
@@ -77,8 +79,6 @@ module.exports = {
 
             await confirmationChannel.update({ embeds: [setup3], components: [] });
 
-            const guildOwner = (await interaction.guild.fetchOwner()).id;
-
             const newSettings = new InterchatSettings({
                 guildID: interaction.guild.id,
                 channelID: confirmationChannel.values[0],
@@ -87,7 +87,6 @@ module.exports = {
             });
 
             await newSettings.save();
-
 
 			const embedRulesFinal = new EmbedBuilder()
 				.setTitle(setupLang.rules.title)
@@ -99,7 +98,7 @@ module.exports = {
 
         } catch (error) {
             console.error(error);
-            await interaction.followUp({ content: 'Ha ocurrido un error o no has respondido a tiempo. Por favor, intenta nuevamente.' });
+            await interaction.followUp({ content: 'Ha ocurrido un error o no has respondido a tiempo. Por favor, intentalo nuevamente.' });
         }
     },
 };
