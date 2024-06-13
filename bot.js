@@ -8,9 +8,9 @@ const InterchatSettings = require("./Models/InterchatSettings.js");
 
 // Conexión a MongoDB
 mongoose.connect(MasterConfig.dbURL).then(() => {
-    console.log("[\033[0;32mLOG - SYS\033[0m] Conectado a MongoDB.");
+    console.log("[DB  -  LOG] Conectado a MongoDB.");
 }).catch(err => {
-    console.log("[\033[0;31mLOG - ERR\033[0m] Error al conectar a MongoDB: " + err);
+    console.log("[DB  -  ERR] Error al conectar a MongoDB: " + err);
 });
 
 const client = new Client({
@@ -52,10 +52,10 @@ for (const file of eventFiles) {
     var d = new Date();
     if (event.once) {
         client.once(event.name, (...args) => event.execute(...args, client));
-        console.log("[\033[0;32mHANDLER - EVENTO\033[0m] >>> \033[0;36m" + fileName + "\033[0m >> cargado (" + d.getMilliseconds() + "ms)");
+        console.log("[HANDLER  -  EVENTO] " + fileName + " cargado (" + d.getMilliseconds() + "ms)");
     } else {
         client.on(event.name, (...args) => event.execute(...args, client));
-        console.log("[\033[0;32mHANDLER - EVENTO\033[0m] >>> \033[0;36m" + fileName + "\033[0m >> cargado (" + d.getMilliseconds() + "ms)");
+        console.log("[HANDLER  -  EVENTO] " + fileName + " cargado (" + d.getMilliseconds() + "ms)");
     }
 }
 
@@ -87,8 +87,8 @@ client.on("messageCreate", async (message) => {
 
 try {
     client.login(MasterConfig.token).then(() => {
-        console.log("[\033[0;32mLOG - SYS\033[0m] El bot ha iniciado sesión.");
+        console.log("[CLIENT - LOG] El bot ha iniciado sesión.");
     });
 } catch (e) {
-    console.log("[\033[0;31mLOG - ERR\033[0m] Error al iniciar sesión: " + e);
+    console.log("[CLIENT - ERR] Error al iniciar sesión: " + e);
 }
