@@ -6,10 +6,10 @@ const Mod = require('../Ranks/mod.js');
 const Admin = require('../Ranks/admin.js');
 const SuperAdmin = require('../Ranks/superadm.js');
 const Developer = require('../Ranks/dev.js');
-const Owner = require('../Ranks/owner.js');
+const owner = require('../Ranks/owner.js');
 
 // Exportar los rangos como un objeto
-module.exports = {
+const ranks = {
     Usuario,
     Vip,
     BugHunter,
@@ -17,5 +17,9 @@ module.exports = {
     Admin,
     SuperAdmin,
     Developer,
-    Owner
+    owner
 };
+
+console.log("Rank Manager:", ranks);
+
+module.exports = ranks;

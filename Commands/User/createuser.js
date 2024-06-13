@@ -39,7 +39,7 @@ module.exports = {
                 let newUserProfile = new dbModel({
                     userID: interaction.user.id,
                     apodo: "Sin apodo",
-                    rank: [rankManager.Usuario.id],
+                    rank: rankManager.Usuario.id,
                     dinero: 0,
                     isVip: false,
                     fechaCreacion: new Date(),
