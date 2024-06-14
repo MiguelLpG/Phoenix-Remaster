@@ -11,9 +11,9 @@ mongoose.connect(MasterConfig.dbURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
-    console.log("[\033[0;32mLOG - SYS\033[0m] Conectado a MongoDB.");
+    console.log("[LOG - SYS] Conectado a MongoDB.");
 }).catch(err => {
-    console.log("[\033[0;31mLOG - ERR\033[0m] Error al conectar a MongoDB: " + err);
+    console.log("[LOG - ERR] Error al conectar a MongoDB: " + err);
 });
 
 const client = new Client({

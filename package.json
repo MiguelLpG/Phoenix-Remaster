@@ -1,10 +1,10 @@
 {
-  "name": "phoenix-bot",
+  "name": "conecta",
   "version": "0.0.1",
   "main": "bot.js",
   "scripts": {
     "run": "node bot.js",
-    "dev": "node deploy-devcmd.js | node bot.js"
+    "dev": "nodemon bot.js"
   },
   "author": "vitro.",
   "license": "MIT",
