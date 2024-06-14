@@ -40,3 +40,6 @@ node bot.js
     "dbURL": "MongoDB DB URL"
 }
 ```
+It should look like this::
+
+<img align="center" src="Images/folders.png" alt="Image of the folder and file structure" >
