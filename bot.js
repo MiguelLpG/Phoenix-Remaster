@@ -7,10 +7,13 @@ const mongoose = require('mongoose');
 const InterchatSettings = require("./Models/InterchatSettings.js");
 
 // Conexión a MongoDB
-mongoose.connect(MasterConfig.dbURL).then(() => {
-    console.log("[DB  -  LOG] Conectado a MongoDB.");
+mongoose.connect(MasterConfig.dbURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log("[\033[0;32mLOG - SYS\033[0m] Conectado a MongoDB.");
 }).catch(err => {
-    console.log("[DB  -  ERR] Error al conectar a MongoDB: " + err);
+    console.log("[\033[0;31mLOG - ERR\033[0m] Error al conectar a MongoDB: " + err);
 });
 
 const client = new Client({

@@ -4,5 +4,6 @@ module.exports = {
     alias: ["dueño"],
     id: "owner",
     badgeIcon: ":busts_in_silhouette:",
-    texto: ":busts_in_silhouette: [OWNER]({0}) :busts_in_silhouette:"
+    texto: ":busts_in_silhouette: [OWNER](%%) :busts_in_silhouette:",
+    embedColor: "Red"
 };

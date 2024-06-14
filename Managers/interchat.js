@@ -52,7 +52,6 @@ module.exports = async (client, message) => {
 
     console.log(`Rango del usuario: ${interchatInfoProf.rank}`);
     const rangoUsuario = rankManager[interchatInfoProf.rank];
-    console.log(`Objeto de rango obtenido: ${JSON.stringify(rangoUsuario)}`);
 
     if (!rangoUsuario) {
         console.error(`No se encontró el rango: ${interchatInfoProf.rank}`);
@@ -61,18 +60,33 @@ module.exports = async (client, message) => {
     const nombreRango = rangoUsuario ? rangoUsuario.nombre : "Sin rango";
     const hashUsuario = interchatInfoProf.interchatID;
 
-    for (const srv of client.guilds.cache.values()) {
+    const guilds = Array.from(client.guilds.cache.values());
+    let index = 0;
+
+    const sendMessage = async () => {
+        if (index >= guilds.length) return;
+
+        const srv = guilds[index];
         try {
             const interchatSettings = await InterchatSettings.find({ guildID: srv.id });
 
             if (interchatSettings.length > 0) {
                 for (const setting of interchatSettings) {
                     const interchatChannel = client.channels.cache.get(setting.channelID);
+
+                    const nombreRank = rangoUsuario.texto;
+                    const finalRank = nombreRank.replace("%%", "https://discord.gg/rqF24yX5")
+
                     if (interchatChannel) {
                         const embed = new EmbedBuilder()
-                            .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) })
-                            .setDescription(message.content)
-                            .setColor("Aqua")
+                            .setAuthor({ name: `${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
+                            //.setDescription(message.content)
+                            .setDescription(`
+                                > ${message.content}
+
+                                [*Unirse al servidor **${srv.name}***](https://discord.com/developers/applications)
+                                `)
+                            .setColor(rangoUsuario.embedColor)
                             .setFooter({ text: `Rango: ${nombreRango} | Hash: ${hashUsuario}` });
 
                         interchatChannel.send({ embeds: [embed] })
@@ -84,5 +98,10 @@ module.exports = async (client, message) => {
         } catch (e) {
             console.error(`Error al procesar el servidor ${srv.name}:`, e);
         }
-    }
+
+        index++;
+        setTimeout(sendMessage, 250);
+    };
+
+    sendMessage();
 };
