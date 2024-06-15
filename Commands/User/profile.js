@@ -75,7 +75,6 @@ module.exports = {
 
         const interchatInfoProf = await dbModel.findOne({ userID: user.id });
 
-        // Verificación de interchatInfoProf antes de continuar
         if (!interchatInfoProf) {
             return interaction.reply({ content: "Para usar este comando debes tener una cuenta en Conecta!, crea una con `/createuser`.", ephemeral: true });
         }

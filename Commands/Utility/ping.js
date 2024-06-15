@@ -6,7 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Replies with Pong!'),
-    async execute(interaction, client) {  // Cambia el orden de los parámetros
+    async execute(interaction, client) { 
         const initPing = Date.now();
         const pingeandoEmbed = new EmbedBuilder()
             .setColor(0x0099FF)

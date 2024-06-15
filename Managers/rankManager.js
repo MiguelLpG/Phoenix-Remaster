@@ -1,4 +1,3 @@
-// Importar todos los rangos
 const Usuario = require('../Ranks/usuario.js');
 const Vip = require('../Ranks/vip.js');
 const BugHunter = require('../Ranks/bughunter.js');
@@ -8,7 +7,6 @@ const SuperAdmin = require('../Ranks/superadm.js');
 const Developer = require('../Ranks/dev.js');
 const owner = require('../Ranks/owner.js');
 
-// Exportar los rangos como un objeto
 const ranks = {
     Usuario,
     Vip,
@@ -20,6 +18,6 @@ const ranks = {
     owner
 };
 
-console.log("Rank Manager:", ranks);
+console.log("[DEBUG] Rank Manager:", ranks); 
 
 module.exports = ranks;

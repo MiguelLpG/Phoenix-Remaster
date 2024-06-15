@@ -5,6 +5,7 @@ const MasterConfig = require('./Config/Master.json');
 const mongoose = require('mongoose');
 
 const InterchatSettings = require("./Models/InterchatSettings.js");
+const sendInterchatMessage = require('./Managers/interchat.js');
 
 // Conexión a MongoDB
 mongoose.connect(MasterConfig.dbURL, {
@@ -80,12 +81,26 @@ client.on("messageCreate", async (message) => {
 
     if (palabras.some(palabra => messageContent.includes(palabra))) {
         await message.delete()
-        return message.channel.send({ content: `<@${message.author.id}>`, embeds: [palabraEmbed ] })
+        return message.channel.send({ content: `<@${message.author.id}>`, embeds: [palabraEmbed] })
     }
 
-    const interchatSend = require('./Managers/interchat.js');
-    interchatSend(client, message)
+    // ver si el mensaje es una respuesta
+    if (message.reference && message.reference.messageId) {
+        const originalMessage = await message.channel.messages.fetch(message.reference.messageId);
+        if (originalMessage) {
+            const embed = originalMessage.embeds[0];
+            const originalAuthorTag = embed.author.name;
+            const originalMessageContent = embed.description; // obtener el mensaje original
 
+            const user = client.users.cache.find(u => u.tag === originalAuthorTag);
+            if (user) {
+                sendInterchatMessage(client, message, user, originalMessageContent);
+                return;
+            }
+        }
+    }
+
+    sendInterchatMessage(client, message);
 });
 
 try {

@@ -3,6 +3,9 @@ const rankManager = require('./rankManager.js');
 const InterchatSettings = require("../Models/InterchatSettings.js");
 const UserDatabase = require("../Models/UserDatabase.js");
 
+// guardar los mensajes para luego poder las respuestas
+let interchatMessages = {};
+
 async function generateUniqueInterchatID() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let interchatID;
@@ -20,7 +23,7 @@ async function generateUniqueInterchatID() {
     return interchatID;
 }
 
-module.exports = async (client, message) => {
+async function sendInterchatMessage(client, message, replyToUser = null, originalMessageContent = null) {
     const user = message.author;
     let interchatInfoProf = await UserDatabase.findOne({ userID: user.id });
 
@@ -50,7 +53,6 @@ module.exports = async (client, message) => {
             .catch(err => console.error(`No se pudo enviar el mensaje privado a ${user.tag}:`, err));
     }
 
-    console.log(`Rango del usuario: ${interchatInfoProf.rank}`);
     const rangoUsuario = rankManager[interchatInfoProf.rank];
 
     if (!rangoUsuario) {
@@ -73,25 +75,24 @@ module.exports = async (client, message) => {
             if (interchatSettings.length > 0) {
                 for (const setting of interchatSettings) {
                     const interchatChannel = client.channels.cache.get(setting.channelID);
-
-                    const nombreRank = rangoUsuario.texto;
-                    const finalRank = nombreRank.replace("%%", "https://discord.gg/rqF24yX5")
-
                     if (interchatChannel) {
+                        let description;
+                        if (replyToUser) {
+                            description = `*<@${user.id}> ha respondido a <@${replyToUser.id}>:*\n> ${message.content}\n\n**Mensaje original:**\n ${originalMessageContent}`;
+                        } else {
+                            description = `> ${message.content}`;
+                        }
+
                         const embed = new EmbedBuilder()
                             .setAuthor({ name: `${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
-                            //.setDescription(message.content)
-                            .setDescription(`
-                                > ${message.content}
-
-                                [*Unirse al servidor **${srv.name}***](https://discord.com/developers/applications)
-                                `)
-                            .setColor(rangoUsuario.embedColor)
+                            .setDescription(description)
+                            .setColor(rangoUsuario.embedColor || "Aqua")
                             .setFooter({ text: `Rango: ${nombreRango} | Hash: ${hashUsuario}` });
 
-                        interchatChannel.send({ embeds: [embed] })
-                            .then(() => console.log(`Mensaje enviado a ${srv.name} en el canal ${interchatChannel.id}`))
-                            .catch(err => console.error(`No se pudo enviar el mensaje a ${srv.name} en el canal ${interchatChannel.id}:`, err));
+                        const sentMessage = await interchatChannel.send({ embeds: [embed] });
+                        if (!replyToUser) {
+                            interchatMessages[sentMessage.id] = { user, message };
+                        }
                     }
                 }
             }
@@ -100,8 +101,10 @@ module.exports = async (client, message) => {
         }
 
         index++;
-        setTimeout(sendMessage, 250);
+        setTimeout(sendMessage, 250); // 0.25 segundos de retraso entre cada mensaje para evitar ratelimit
     };
 
     sendMessage();
-};
+}
+
+module.exports = sendInterchatMessage;
