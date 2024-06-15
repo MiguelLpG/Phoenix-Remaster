@@ -4,6 +4,7 @@ const { Client, Collection, GatewayIntentBits, ChannelType, EmbedBuilder } = req
 const MasterConfig = require('./Config/Master.json');
 const mongoose = require('mongoose');
 
+// -->> Managers <<--
 const InterchatSettings = require("./Models/InterchatSettings.js");
 const sendInterchatMessage = require('./Managers/interchat.js');
 

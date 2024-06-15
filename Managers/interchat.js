@@ -28,7 +28,6 @@ async function sendInterchatMessage(client, message, replyToUser = null, origina
     let interchatInfoProf = await UserDatabase.findOne({ userID: user.id });
 
     if (!interchatInfoProf) {
-        console.log(`No se encontró la configuración de interchat para el usuario: ${user.id}, creando una nueva.`);
         const interchatID = await generateUniqueInterchatID();
         
         interchatInfoProf = new UserDatabase({
@@ -47,7 +46,7 @@ async function sendInterchatMessage(client, message, replyToUser = null, origina
         const dmEmbed = new EmbedBuilder()
             .setColor('#00FF00')
             .setTitle('Configuración de Interchat Creada')
-            .setDescription(`Hola ${user.username}, se ha creado automáticamente una configuración de Interchat para ti porque no tenías una. Tu Interchat ID es **${interchatID}**.`);
+            .setDescription(`Hola ${user.username}! He creado automáticamente una configuración de Interchat para ti, pues no tenías una. Tu Interchat ID es **${interchatID}**.`);
 
         user.send({ embeds: [dmEmbed] })
             .catch(err => console.error(`No se pudo enviar el mensaje privado a ${user.tag}:`, err));
