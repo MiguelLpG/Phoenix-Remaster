@@ -35,17 +35,7 @@ module.exports = {
         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
         let guildError = client.guilds.cache.get('1248946023536005151');
-        
-        if (!guildError) {
-            console.error('No se ha encontrado el servidor con ID 1248946023536005151.');
-            return;
-        }
-        
         let canalError = guildError.channels.cache.get('1249644174676852777');
-        if (!canalError) {
-            console.error('No se ha encontrado el canal con ID 1249644174676852777.');
-            return;
-        }
 
         try {
             await command.execute(interaction, client);
