@@ -3,7 +3,6 @@ const rankManager = require('./rankManager.js');
 const InterchatSettings = require("../Models/InterchatSettings.js");
 const UserDatabase = require("../Models/UserDatabase.js");
 
-// guardar los mensajes para luego poder las respuestas
 let interchatMessages = {};
 
 async function generateUniqueInterchatID() {
